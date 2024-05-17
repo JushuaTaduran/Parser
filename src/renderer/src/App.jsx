@@ -5,6 +5,7 @@ import Parser from './components/Analyzer/Parser'
 import TokenTable from './components/TokenTable/TokenTable'
 import GrammarTable from './components/GrammarTable/GrammarTable'
 import { PacmanLoader } from 'react-spinners'
+import Swal from 'sweetalert2'
 
 const App = () => {
   const [userInput, setUserInput] = useState('')
@@ -12,19 +13,50 @@ const App = () => {
   const parser = new Parser()
 
   const defaultInput = 'Q = '
-
   const inputString = `${defaultInput}${userInput}`
 
+  const showAlert = (title, text) => {
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: 'error',
+      confirmButtonText: 'Close',
+      customClass: {
+        confirmButton: 'bg-blue-500 text-white rounded py-2 px-4'
+      }
+    })
+  }
+
   const parseInput = () => {
-    if (userInput.trim() !== '') {
+    if (userInput.trim() === '') {
+      showAlert('Input Error', 'Input string is empty. Please enter a valid expression.')
+      return
+    }
+
+    try {
       const result = parser.parse(inputString)
       setParsedResult(result)
+    } catch (error) {
+      showAlert('Parsing Error', error.message)
     }
   }
 
   const resetInputAndResult = () => {
-    setUserInput('')
-    setParsedResult(null)
+    Swal.fire({
+      title: 'Reset Confirmation',
+      text: 'Are you sure you want to reset?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, reset it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setUserInput('')
+        setParsedResult(null)
+        Swal.fire('Reset!', 'Your input and result have been reset.', 'success')
+      }
+    })
   }
 
   console.log(inputString)
@@ -95,7 +127,7 @@ const App = () => {
                 <li>San Juan, Rochelle</li>
               </ul>
               <a
-                href=""
+                href="https://github.com/JushuaTaduran/Parser"
                 className="bg-none hover:bg-black rounded-md hover:px-4 hover:py-2 transition-all hover:font-bold"
               >
                 Check GitHub

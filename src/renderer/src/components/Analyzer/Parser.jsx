@@ -14,6 +14,7 @@ class Parser {
     return this.Assignment()
   }
 
+  // Eliminates the current token if it matches the specified token type
   _elim(tokenType) {
     const token = this.lookahead
 
@@ -32,6 +33,7 @@ class Parser {
     return token
   }
 
+  // Parses an assignment statement
   Assignment() {
     const identifier = this.Identifier()
     const operator = this.AssignmentOperator()
@@ -42,6 +44,7 @@ class Parser {
     }
   }
 
+  // Parses an assignment operator
   AssignmentOperator() {
     const operator = this._elim(TokenType.ASSIGNMENT)
     return {
@@ -52,6 +55,10 @@ class Parser {
     }
   }
 
+  // Parses primary expressions
+  // Identifier
+  // Constants
+  // Parenthesized Expression
   Primary() {
     console.log('Primary Method')
     console.log('Lookahead:', this.lookahead)
@@ -72,6 +79,7 @@ class Parser {
     }
   }
 
+  // Parses term expressions
   Term() {
     console.log('Term Method')
     console.log('Lookahead:', this.lookahead)
@@ -95,6 +103,7 @@ class Parser {
     return primary
   }
 
+  // Parses expression
   Expression() {
     console.log('Expression Method')
     console.log('Lookahead:', this.lookahead)
@@ -126,6 +135,7 @@ class Parser {
     return term
   }
 
+  // Parses parenthesized expressions
   ParenthesizedExpression() {
     this._elim(TokenType.PARENTHESIS_LEFT)
     const expression = this.Expression()
@@ -133,6 +143,7 @@ class Parser {
     return expression
   }
 
+  // Parses number literals
   Number() {
     const numberToken = this._elim(TokenType.NUMBER)
     return {
@@ -143,6 +154,9 @@ class Parser {
     }
   }
 
+  // Parses operator tokens
+  // Additive Operators
+  // Multiplicative Operators
   Operator() {
     let operatorToken = null
 
@@ -167,6 +181,7 @@ class Parser {
     }
   }
 
+  // Parses identifier tokens
   Identifier() {
     const identifierToken = this._elim(TokenType.IDENTIFIER)
     return {

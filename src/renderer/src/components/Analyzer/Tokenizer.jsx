@@ -1,3 +1,4 @@
+// Token types enumeration
 export const TokenType = {
   WHITESPACE: 'WHITESPACE',
   NUMBER: 'NUMBER',
@@ -13,6 +14,7 @@ export const TokenType = {
   DELIMITER: ';'
 }
 
+// Regular expressions for token types
 const TokenMap = [
   [/^\s+/, TokenType.WHITESPACE],
   [/^(?:\d+(?:\.\d*)?|\.\d+)/, TokenType.NUMBER],
@@ -35,14 +37,17 @@ export function Tokenizer(inputString) {
     cursor = 0
   }
 
+  //Check if cursor at end
   const isEnd = () => {
     return cursor === string.length
   }
 
+  //Check String Lenght
   const checkTokens = () => {
     return cursor < string.length
   }
 
+  //Check next Tokens to parse
   const nextToken = () => {
     // Skip whitespace tokens
     while (checkTokens()) {
@@ -73,9 +78,10 @@ export function Tokenizer(inputString) {
       }
     }
 
-    return null // Return null if no token matches
+    return null
   }
 
+  // Match cursor's string with the Regular Expression map
   const match = (regex, subString) => {
     const matched = regex.exec(subString)
 
